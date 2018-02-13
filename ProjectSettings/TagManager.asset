@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Immovable
   - Player2
+  - Goal
+  - ui
   layers:
   - Default
   - TransparentFX
