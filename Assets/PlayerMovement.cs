@@ -25,8 +25,8 @@ public class PlayerMovement : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        rb = GetComponent<Rigidbody2D>();
-        if (gameObject.tag=="Player")
+        rb = GetComponent<Rigidbody2D>(); //save rigidbody for later use
+        if (gameObject.tag=="Player") //check if the player that this is attached to is p1 or p2 and assign controls based on that
         {
             h = "Horizontal";
             v = "Vertical";
@@ -48,39 +48,37 @@ public class PlayerMovement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        float xAxis = -Input.GetAxis(h);
+        //get input for movement
+        float xAxis = -Input.GetAxis(h); 
         float yAxis = -Input.GetAxis(v);
-        Accellerate(xAxis, yAxis);
+        Accellerate(xAxis, yAxis); //call the movement function
 
-        if (Input.GetAxis(f1)!=0)
+        if (Input.GetAxis(f1)!=0) //get input for shockwave attack from right trigger
         {
-            if (canFire1)
+            if (canFire1) // since the trigger doesn't have a "getbuttondown" because it is an axis this bool takes care of only fireing it once when the trigger is pulled
             {
-                //fireVector = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
-                if (Input.GetAxis(hAim)!= 0 || Input.GetAxis(vAim)!=0)
+                if (Input.GetAxis(hAim)!= 0 || Input.GetAxis(vAim)!=0) //this is to make sure you don't fire a shockwave when you are not aiming anywhere
                 {
-                    fireVector = new Vector2(Input.GetAxis(hAim), -Input.GetAxis(vAim));
-                    print(fireVector);
-                    GameObject newBullet = Instantiate(bullet, transform.position, Quaternion.identity);
-                    Physics2D.IgnoreCollision(GetComponent<Collider2D>(), newBullet.GetComponent<Collider2D>());
-                    newBullet.GetComponent<Rigidbody2D>().AddForce(fireVector * fireSpeed);
-                    canFire1 = false;
+                    fireVector = new Vector2(Input.GetAxis(hAim), -Input.GetAxis(vAim)); //get input for aiming
+                    //print(fireVector);
+                    GameObject newBullet = Instantiate(bullet, transform.position, Quaternion.identity); //instantiate bullet/shockwave
+                    Physics2D.IgnoreCollision(GetComponent<Collider2D>(), newBullet.GetComponent<Collider2D>()); // this is to make sure you are not pushed around by your own bullet/shockwave
+                    newBullet.GetComponent<Rigidbody2D>().AddForce(fireVector * fireSpeed); //add force to the bullet in the direction of your aim
+                    canFire1 = false; //this is the same bool, that makes sure you don't fire a 1000 bullets a second
                 }
             }
         }
         else
         {
-            canFire1 = true;
+            canFire1 = true; //when the player releases the trigger they get back the ability to shoot
         }
-        if (Input.GetAxis(f2)!=0)
+        if (Input.GetAxis(f2)!=0) //same thing for the other projectile, you get the idea
         {
             if (canFire2)
             {
-                //fireVector = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
                 if (Input.GetAxis(hAim) != 0 || Input.GetAxis(vAim) != 0)
                 {
                     fireVector = new Vector2(Input.GetAxis(hAim), -Input.GetAxis(vAim));
-                    print(fireVector);
                     GameObject newBullet = Instantiate(bullet2, transform.position, Quaternion.identity);
                     newBullet.GetComponent<BulletSwitchBehavior>().SetWhoFiredMe(gameObject);
                     Physics2D.IgnoreCollision(GetComponent<Collider2D>(), newBullet.GetComponent<Collider2D>());
@@ -97,20 +95,16 @@ public class PlayerMovement : MonoBehaviour {
 
     }
 
-    void Accellerate(float y, float x)
+    void Accellerate(float y, float x) //this is the movement of the player
     {
-        Vector2 force = new Vector2(0, 0);
-        if (new Vector2 (x,y).magnitude > deadzone)
+        Vector2 force = new Vector2(0, 0); 
+        if (new Vector2 (x,y).magnitude > deadzone) // there is a deadzone on the controllers joysticks, if the input is in the dead zone, we ignore it
         {
-            force = (transform.up * y * accelleration) + (transform.right * x * accelleration);
+            force = (transform.up * y * accelleration) + (transform.right * x * accelleration); //we have physics based movement, here we calculate the force to be applied to the player
         }
-        if (y != 0 || x != 0)
-        {
-            
 
-        }
-        rb.AddForce(force);
-        ClampVelocity();
+        rb.AddForce(force); // and then we apply that force to the player
+        ClampVelocity(); // this function limits the velocity of the player to the max velocity we set
     }
     void ClampVelocity()
     {
