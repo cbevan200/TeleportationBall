@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ball : MonoBehaviour
+public class SliderHandle2 : MonoBehaviour
 {
 
-    Vector2 defaultPos;
+    public UIManager2 ui2;
 
     // Use this for initialization
     void Start()
     {
 
-        defaultPos = transform.position;
+        ui2 = GameObject.FindWithTag("ui2").GetComponent<UIManager2>();
 
     }
 
@@ -21,14 +21,11 @@ public class Ball : MonoBehaviour
 
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D Ball)
+
     {
 
-        {
-
-            transform.position = defaultPos;
-
-        }
+        ui2.IncrementScore();
 
     }
 }

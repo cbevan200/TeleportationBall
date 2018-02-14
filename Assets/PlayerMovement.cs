@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour {
     private bool canFire1 = true;
     private bool canFire2 = true;
 
+
     public float deadzone = 0.25f;
 
     //axes to use
@@ -44,6 +45,7 @@ public class PlayerMovement : MonoBehaviour {
             f1 = "Fire12";
             f2 = "Fire22";
         }
+
 	}
 	
 	// Update is called once per frame
@@ -113,4 +115,5 @@ public class PlayerMovement : MonoBehaviour {
 
         rb.velocity = new Vector2(x, y);
     }
+
 }

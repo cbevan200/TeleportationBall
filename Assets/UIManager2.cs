@@ -1,17 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class Ball : MonoBehaviour
-{
+public class UIManager2 : MonoBehaviour {
 
-    Vector2 defaultPos;
+    int score = 0;
+    public Text scoreText;
 
     // Use this for initialization
     void Start()
     {
 
-        defaultPos = transform.position;
+
 
     }
 
@@ -21,14 +22,12 @@ public class Ball : MonoBehaviour
 
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    public void IncrementScore()
     {
 
-        {
-
-            transform.position = defaultPos;
-
-        }
+        score++;
+        scoreText.text = "" + score;
 
     }
+
 }

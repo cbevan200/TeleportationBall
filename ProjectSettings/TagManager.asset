@@ -8,6 +8,7 @@ TagManager:
   - Player2
   - Goal
   - ui
+  - ui2
   layers:
   - Default
   - TransparentFX
